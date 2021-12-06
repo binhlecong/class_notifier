@@ -1,4 +1,4 @@
-class ClassRoom {
+class Classroom {
   final int id;
   final String title;
   final DateTime dateTime;
@@ -7,7 +7,7 @@ class ClassRoom {
   final String url;
   final int importance;
 
-  ClassRoom({
+  Classroom({
     required this.id,
     required this.title,
     required this.description,
@@ -17,7 +17,7 @@ class ClassRoom {
     required this.importance,
   });
 
-  factory ClassRoom.fromMap(Map<String, dynamic> json) => ClassRoom(
+  factory Classroom.fromMap(Map<String, dynamic> json) => Classroom(
         id: json['id'],
         title: json['title'],
         description: json['description'],
