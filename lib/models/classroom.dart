@@ -58,7 +58,29 @@ class Classroom {
     }
   }
 
-  String getWeekDays(){
-    return 'Mon Tue Wed Thu Fri Sat Sun';
+  bool isRepeatAt(int day) {
+    return (weekDays! >> day & 1) == 1;
+  }
+
+  void setRepeatAt(int day, bool isRepeat) {
+    if (isRepeat) {
+      weekDays = weekDays! | 1 << day;
+    } else {
+      weekDays = weekDays! & ~(1 << day);
+    }
+  }
+
+  String getWeekDays() {
+    List<String> dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    String res = '';
+    for (var i = 0; i < 7; i++) {
+      if (isRepeatAt(i)) {
+        res += dayNames[i];
+      }
+    }
+    if (res.isEmpty) {
+      return 'One time event';
+    }
+    return res;
   }
 }

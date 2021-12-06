@@ -43,7 +43,7 @@ class ClassroomCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Text(
-                        classroom.title ?? "(Unnamed Task)",
+                        classroom.title!,
                         style: const TextStyle(
                           color: Color(0xFF211551),
                           fontSize: 18.0,
@@ -51,7 +51,7 @@ class ClassroomCard extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        classroom.description ?? "No Description Added",
+                        classroom.description!,
                         style: const TextStyle(
                           fontSize: 16.0,
                           color: Colors.white38,
