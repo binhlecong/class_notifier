@@ -1,5 +1,6 @@
 import 'package:class_notifier/database/db_helper.dart';
 import 'package:class_notifier/models/classroom.dart';
+import 'package:class_notifier/widgets/classroomcard.dart';
 import 'package:flutter/material.dart';
 
 import 'classroompage.dart';
@@ -17,6 +18,10 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: const Icon(Icons.book),
+        title: const Text('Class Notifier'),
+      ),
       body: SafeArea(
         child: Container(
           width: double.infinity,
@@ -50,8 +55,9 @@ class _HomePageState extends State<HomePage> {
                                   },
                                 );
                               },
-                              child: Text(
-                                  snapshot.data![index].title ?? "Nothing"),
+                              child: ClassroomCard(
+                                classroom: snapshot.data![index],
+                              ),
                             );
                           },
                         );

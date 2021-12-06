@@ -61,8 +61,6 @@ class _ClassroomPageState extends State<ClassroomPage> {
                 decoration: const InputDecoration(
                   hintStyle: TextStyle(fontSize: 17),
                   hintText: 'title',
-                  suffixIcon: Icon(Icons.search),
-                  border: InputBorder.none,
                   contentPadding: EdgeInsets.all(20),
                 ),
                 onChanged: (value) {
@@ -73,8 +71,6 @@ class _ClassroomPageState extends State<ClassroomPage> {
                 decoration: const InputDecoration(
                   hintStyle: TextStyle(fontSize: 17),
                   hintText: 'description',
-                  suffixIcon: Icon(Icons.search),
-                  border: InputBorder.none,
                   contentPadding: EdgeInsets.all(20),
                 ),
                 onChanged: (value) {
@@ -112,8 +108,6 @@ class _ClassroomPageState extends State<ClassroomPage> {
                 decoration: const InputDecoration(
                   hintStyle: TextStyle(fontSize: 17),
                   hintText: 'week day',
-                  suffixIcon: Icon(Icons.search),
-                  border: InputBorder.none,
                   contentPadding: EdgeInsets.all(20),
                 ),
                 onChanged: (value) {
@@ -124,8 +118,6 @@ class _ClassroomPageState extends State<ClassroomPage> {
                 decoration: const InputDecoration(
                   hintStyle: TextStyle(fontSize: 17),
                   hintText: 'url',
-                  suffixIcon: Icon(Icons.search),
-                  border: InputBorder.none,
                   contentPadding: EdgeInsets.all(20),
                 ),
                 onChanged: (value) {
@@ -136,8 +128,6 @@ class _ClassroomPageState extends State<ClassroomPage> {
                 decoration: const InputDecoration(
                   hintStyle: TextStyle(fontSize: 17),
                   hintText: 'importance',
-                  suffixIcon: Icon(Icons.search),
-                  border: InputBorder.none,
                   contentPadding: EdgeInsets.all(20),
                 ),
                 onChanged: (value) {

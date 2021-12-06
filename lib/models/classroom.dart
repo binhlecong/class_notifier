@@ -57,4 +57,8 @@ class Classroom {
         return Colors.blue;
     }
   }
+
+  String getWeekDays(){
+    return 'Mon Tue Wed Thu Fri Sat Sun';
+  }
 }
