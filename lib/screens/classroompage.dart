@@ -16,27 +16,15 @@ class _ClassroomPageState extends State<ClassroomPage> {
   DatabaseHelper _databaseHelper = DatabaseHelper();
   final myController = TextEditingController();
   final format = DateFormat("yyyy-MM-dd HH:mm");
-
-  int _id = 0;
-  String _title = "";
-  String _description = "";
-  DateTime _dateTime = DateTime.now();
-  int _weekDays = 0;
-  String _url = "";
-  int _importance = 0;
-
-  List<bool> _isRepeat = [false, false, false, false, false, false, false];
+  Classroom? classroom = null;
 
   @override
   void initState() {
-    if (widget.classroom != null) {
-      _id = widget.classroom!.id ?? 0;
-      _title = widget.classroom!.title ?? "";
-      _description = widget.classroom!.description ?? "";
-      _dateTime = widget.classroom!.dateTime ?? DateTime.now();
-      _weekDays = widget.classroom!.weekDays ?? 0;
-      _url = widget.classroom!.url ?? "";
-      _importance = widget.classroom!.importance ?? 1;
+    if (widget.classroom == null) {
+      classroom = Classroom.fromParams(
+          '<No title>', '<No description>', DateTime.now(), 0, '', 2);
+    } else {
+      classroom = widget.classroom!;
     }
 
     super.initState();
@@ -65,7 +53,7 @@ class _ClassroomPageState extends State<ClassroomPage> {
                   contentPadding: EdgeInsets.all(20),
                 ),
                 onChanged: (value) {
-                  _title = value;
+                  classroom!.title = value;
                 },
               ),
               TextField(
@@ -75,12 +63,12 @@ class _ClassroomPageState extends State<ClassroomPage> {
                   contentPadding: EdgeInsets.all(20),
                 ),
                 onChanged: (value) {
-                  _description = value;
+                  classroom!.description = value;
                 },
               ),
               DateTimeField(
                 decoration: InputDecoration(
-                  labelText: _dateTime.toString(),
+                  labelText: classroom!.dateTime!.toIso8601String(),
                   isDense: true,
                   contentPadding: const EdgeInsets.all(2),
                 ),
@@ -98,7 +86,7 @@ class _ClassroomPageState extends State<ClassroomPage> {
                           currentValue ?? DateTime.now(),
                         ));
 
-                    _dateTime = DateTimeField.combine(date, time);
+                    classroom!.dateTime = DateTimeField.combine(date, time);
                     return DateTimeField.combine(date, time);
                   } else {
                     return currentValue;
@@ -123,7 +111,7 @@ class _ClassroomPageState extends State<ClassroomPage> {
                   contentPadding: EdgeInsets.all(20),
                 ),
                 onChanged: (value) {
-                  _url = value;
+                  classroom!.url = value;
                 },
               ),
               TextField(
@@ -133,7 +121,7 @@ class _ClassroomPageState extends State<ClassroomPage> {
                   contentPadding: EdgeInsets.all(20),
                 ),
                 onChanged: (value) {
-                  _importance = int.tryParse(value) ?? 1;
+                  classroom!.importance = int.tryParse(value) ?? 1;
                 },
               ),
               Expanded(
@@ -149,7 +137,8 @@ class _ClassroomPageState extends State<ClassroomPage> {
                             label: const Text('Delete'),
                             onPressed: () async {
                               if (widget.classroom != null) {
-                                await _databaseHelper.deleteClassroom(_id);
+                                await _databaseHelper
+                                    .deleteClassroom(classroom!.id!);
                               }
                               Navigator.pop(context);
                             },
@@ -162,36 +151,13 @@ class _ClassroomPageState extends State<ClassroomPage> {
                             ),
                             label: const Text('Save'),
                             onPressed: () async {
+                              int _id = 0;
                               if (widget.classroom == null) {
-                                Classroom newClassroom = Classroom.fromParams(
-                                  _title,
-                                  _description,
-                                  _dateTime,
-                                  _weekDays,
-                                  _url,
-                                  _importance,
-                                );
-
-                                for (var i = 0; i < 7; i++) {
-                                  newClassroom.setRepeatAt(i, _isRepeat[i]);
-                                }
-
                                 _id = await _databaseHelper
-                                    .insertClassroom(newClassroom);
+                                    .insertClassroom(classroom!);
                               } else {
-                                Classroom thisClassroom =
-                                    await _databaseHelper.getClassroom(_id);
-                                thisClassroom.title = _title;
-                                thisClassroom.description = _description;
-                                thisClassroom.dateTime = _dateTime;
-                                for (var i = 0; i < 7; i++) {
-                                  thisClassroom.setRepeatAt(i, _isRepeat[i]);
-                                }
-                                thisClassroom.url = _url;
-                                thisClassroom.importance = _importance;
-
                                 _id = await _databaseHelper
-                                    .updateClassroom(thisClassroom);
+                                    .updateClassroom(classroom!);
                               }
 
                               Navigator.pop(context);
@@ -211,18 +177,19 @@ class _ClassroomPageState extends State<ClassroomPage> {
   }
 
   GestureDetector buildDaySelector(String name, int value) {
+    bool isRepeated = classroom!.isRepeatAt(value);
     return GestureDetector(
       onTap: () {
         setState(() {
-          _isRepeat[value] = true;
+          classroom!.setRepeatAt(value, !isRepeated);
         });
       },
-      child: Container(
+      child: SizedBox(
         width: 50,
         height: 40,
         child: Text(
           name,
-          style: TextStyle(color: _isRepeat[value] ? Colors.red : Colors.grey),
+          style: TextStyle(color: isRepeated ? Colors.red : Colors.grey),
         ),
       ),
     );
