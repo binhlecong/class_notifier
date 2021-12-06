@@ -75,7 +75,7 @@ class Classroom {
     String res = '';
     for (var i = 0; i < 7; i++) {
       if (isRepeatAt(i)) {
-        res += dayNames[i];
+        res += dayNames[i] + '  ';
       }
     }
     if (res.isEmpty) {

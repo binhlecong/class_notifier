@@ -25,6 +25,8 @@ class _ClassroomPageState extends State<ClassroomPage> {
   String _url = "";
   int _importance = 0;
 
+  List<bool> _isRepeat = [false, false, false, false, false, false, false];
+
   @override
   void initState() {
     if (widget.classroom != null) {
@@ -32,7 +34,7 @@ class _ClassroomPageState extends State<ClassroomPage> {
       _title = widget.classroom!.title ?? "";
       _description = widget.classroom!.description ?? "";
       _dateTime = widget.classroom!.dateTime ?? DateTime.now();
-      _weekDays = widget.classroom!.weekDays ?? 1;
+      _weekDays = widget.classroom!.weekDays ?? 0;
       _url = widget.classroom!.url ?? "";
       _importance = widget.classroom!.importance ?? 1;
     }
@@ -56,7 +58,6 @@ class _ClassroomPageState extends State<ClassroomPage> {
           padding: const EdgeInsets.fromLTRB(10, 30, 10, 30),
           child: ListView(
             children: [
-              Text(_id.toString()),
               TextField(
                 decoration: const InputDecoration(
                   hintStyle: TextStyle(fontSize: 17),
@@ -104,15 +105,16 @@ class _ClassroomPageState extends State<ClassroomPage> {
                   }
                 },
               ),
-              TextField(
-                decoration: const InputDecoration(
-                  hintStyle: TextStyle(fontSize: 17),
-                  hintText: 'week day',
-                  contentPadding: EdgeInsets.all(20),
-                ),
-                onChanged: (value) {
-                  _weekDays = int.tryParse(value) ?? 1;
-                },
+              Row(
+                children: [
+                  buildDaySelector('Mon', 0),
+                  buildDaySelector('Tue', 1),
+                  buildDaySelector('Wed', 2),
+                  buildDaySelector('Thu', 3),
+                  buildDaySelector('Fri', 4),
+                  buildDaySelector('Sat', 5),
+                  buildDaySelector('Sun', 6),
+                ],
               ),
               TextField(
                 decoration: const InputDecoration(
@@ -161,7 +163,7 @@ class _ClassroomPageState extends State<ClassroomPage> {
                             label: const Text('Save'),
                             onPressed: () async {
                               if (widget.classroom == null) {
-                                Classroom newEvent = Classroom.fromParams(
+                                Classroom newClassroom = Classroom.fromParams(
                                   _title,
                                   _description,
                                   _dateTime,
@@ -170,15 +172,21 @@ class _ClassroomPageState extends State<ClassroomPage> {
                                   _importance,
                                 );
 
+                                for (var i = 0; i < 7; i++) {
+                                  newClassroom.setRepeatAt(i, _isRepeat[i]);
+                                }
+
                                 _id = await _databaseHelper
-                                    .insertClassroom(newEvent);
+                                    .insertClassroom(newClassroom);
                               } else {
                                 Classroom thisClassroom =
                                     await _databaseHelper.getClassroom(_id);
                                 thisClassroom.title = _title;
                                 thisClassroom.description = _description;
                                 thisClassroom.dateTime = _dateTime;
-                                thisClassroom.weekDays = _weekDays;
+                                for (var i = 0; i < 7; i++) {
+                                  thisClassroom.setRepeatAt(i, _isRepeat[i]);
+                                }
                                 thisClassroom.url = _url;
                                 thisClassroom.importance = _importance;
 
@@ -197,6 +205,24 @@ class _ClassroomPageState extends State<ClassroomPage> {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  GestureDetector buildDaySelector(String name, int value) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _isRepeat[value] = true;
+        });
+      },
+      child: Container(
+        width: 50,
+        height: 40,
+        child: Text(
+          name,
+          style: TextStyle(color: _isRepeat[value] ? Colors.red : Colors.grey),
         ),
       ),
     );
