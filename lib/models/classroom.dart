@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class Classroom {
   final int id;
   final String title;
@@ -36,4 +38,21 @@ class Classroom {
         'url': url,
         'importance': importance,
       };
+
+  Color getColorImportance() {
+    switch (importance) {
+      case 0:
+        return Colors.blue;
+      case 1:
+        return Colors.green;
+      case 2:
+        return Colors.yellow;
+      case 3:
+        return Colors.orange;
+      case 4:
+        return Colors.red;
+      default:
+        return Colors.blue;
+    }
+  }
 }
