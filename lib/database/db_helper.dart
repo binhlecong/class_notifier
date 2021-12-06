@@ -8,7 +8,7 @@ class DatabaseHelper {
       join(await getDatabasesPath(), 'classroom.db'),
       onCreate: (db, version) async {
         await db.execute('''CREATE TABLE classroom(
-          id INTEGER PRIMARY KEY, 
+          id INTEGER PRIMARY KEY AUTOINCREMENT, 
           title TEXT, 
           description TEXT,
           dateTime TEXT,
@@ -20,7 +20,7 @@ class DatabaseHelper {
     );
   }
 
-  Future<int> insertTask(Classroom classRoom) async {
+  Future<int> insertClassroom(Classroom classRoom) async {
     int classroomId = 0;
     Database _db = await database();
     await _db
@@ -30,6 +30,12 @@ class DatabaseHelper {
       classroomId = value;
     });
     return classroomId;
+  }
+
+  Future<int> updateClassroom(Classroom classroom) async {
+    Database db = await database();
+    return await db.update('classroom', classroom.toMap(),
+        where: 'id = ?', whereArgs: [classroom.id]);
   }
 
   Future<void> updateClassroomTitle(int id, String title) async {
@@ -44,6 +50,23 @@ class DatabaseHelper {
         "UPDATE classroom SET description = '$description' WHERE id = '$id'");
   }
 
+  Future<Classroom> getClassroom(int id) async {
+    Database db = await database();
+    List<Map<String, dynamic>> maps = await db.query('classroom',
+        columns: [
+          'id',
+          'title',
+          'description',
+          'dateTime',
+          'weekDays',
+          'url',
+          'importance'
+        ],
+        where: 'id = ?',
+        whereArgs: [id]);
+    return Classroom.fromMap(maps.first);
+  }
+
   Future<List<Classroom>> getClassrooms() async {
     Database _db = await database();
     List<Map<String, dynamic>> classroomMap = await _db.query('classroom');
@@ -52,7 +75,7 @@ class DatabaseHelper {
     });
   }
 
-  Future<void> deleteTask(int id) async {
+  Future<void> deleteClassroom(int id) async {
     Database _db = await database();
     await _db.rawDelete("DELETE FROM classroom WHERE id = '$id'");
   }

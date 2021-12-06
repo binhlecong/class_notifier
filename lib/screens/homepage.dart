@@ -1,3 +1,5 @@
+import 'package:class_notifier/database/db_helper.dart';
+import 'package:class_notifier/models/classroom.dart';
 import 'package:flutter/material.dart';
 
 import 'classroompage.dart';
@@ -10,6 +12,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final DatabaseHelper _dbHelper = DatabaseHelper();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,8 +28,34 @@ class _HomePageState extends State<HomePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(
-                    child: SizedBox(
-                      height: 100,
+                    child: FutureBuilder<List<Classroom>>(
+                      initialData: const [],
+                      future: _dbHelper.getClassrooms(),
+                      builder: (context, snapshot) {
+                        return ListView.builder(
+                          itemCount: snapshot.data!.length,
+                          itemBuilder: (context, index) {
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ClassroomPage(
+                                      classroom: snapshot.data![index],
+                                    ),
+                                  ),
+                                ).then(
+                                  (value) {
+                                    setState(() {});
+                                  },
+                                );
+                              },
+                              child: Text(
+                                  snapshot.data![index].title ?? "Nothing"),
+                            );
+                          },
+                        );
+                      },
                     ),
                   ),
                 ],
@@ -40,7 +70,11 @@ class _HomePageState extends State<HomePage> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => ClassroomPage()),
+                      MaterialPageRoute(
+                        builder: (context) => ClassroomPage(
+                          classroom: null,
+                        ),
+                      ),
                     ).then((value) {
                       setState(() {});
                     });

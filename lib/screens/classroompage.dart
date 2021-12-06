@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 
 class ClassroomPage extends StatefulWidget {
   final Classroom? classroom;
-  ClassroomPage({@required this.classroom});
+  ClassroomPage({required this.classroom});
 
   @override
   _ClassroomPageState createState() => _ClassroomPageState();
@@ -28,13 +28,13 @@ class _ClassroomPageState extends State<ClassroomPage> {
   @override
   void initState() {
     if (widget.classroom != null) {
-      _id = widget.classroom!.id;
-      _title = widget.classroom!.title;
-      _description = widget.classroom!.description;
-      _dateTime = widget.classroom!.dateTime;
-      _weekDays = widget.classroom!.weekDays;
-      _url = widget.classroom!.url;
-      _importance = widget.classroom!.importance;
+      _id = widget.classroom!.id ?? 0;
+      _title = widget.classroom!.title ?? "";
+      _description = widget.classroom!.description ?? "";
+      _dateTime = widget.classroom!.dateTime ?? DateTime.now();
+      _weekDays = widget.classroom!.weekDays ?? 1;
+      _url = widget.classroom!.url ?? "";
+      _importance = widget.classroom!.importance ?? 1;
     }
 
     super.initState();
@@ -57,11 +57,25 @@ class _ClassroomPageState extends State<ClassroomPage> {
           child: ListView(
             children: [
               TextField(
+                decoration: const InputDecoration(
+                  hintStyle: TextStyle(fontSize: 17),
+                  hintText: 'title',
+                  suffixIcon: Icon(Icons.search),
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.all(20),
+                ),
                 onChanged: (value) {
                   _title = value;
                 },
               ),
               TextField(
+                decoration: const InputDecoration(
+                  hintStyle: TextStyle(fontSize: 17),
+                  hintText: 'description',
+                  suffixIcon: Icon(Icons.search),
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.all(20),
+                ),
                 onChanged: (value) {
                   _description = value;
                 },
@@ -94,19 +108,101 @@ class _ClassroomPageState extends State<ClassroomPage> {
                 },
               ),
               TextField(
+                decoration: const InputDecoration(
+                  hintStyle: TextStyle(fontSize: 17),
+                  hintText: 'week day',
+                  suffixIcon: Icon(Icons.search),
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.all(20),
+                ),
                 onChanged: (value) {
                   _weekDays = int.tryParse(value) ?? 1;
                 },
               ),
               TextField(
+                decoration: const InputDecoration(
+                  hintStyle: TextStyle(fontSize: 17),
+                  hintText: 'url',
+                  suffixIcon: Icon(Icons.search),
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.all(20),
+                ),
                 onChanged: (value) {
                   _url = value;
                 },
               ),
               TextField(
+                decoration: const InputDecoration(
+                  hintStyle: TextStyle(fontSize: 17),
+                  hintText: 'importance',
+                  suffixIcon: Icon(Icons.search),
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.all(20),
+                ),
                 onChanged: (value) {
                   _importance = int.tryParse(value) ?? 1;
                 },
+              ),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: TextButton.icon(
+                            icon: const Icon(Icons.delete),
+                            label: const Text('Delete'),
+                            onPressed: () async {
+                              if (widget.classroom == null) {
+                                await _databaseHelper.deleteClassroom(_id);
+                              }
+                              Navigator.pop(context);
+                            },
+                          ),
+                        ),
+                        Expanded(
+                          child: TextButton.icon(
+                            icon: const Icon(
+                              Icons.check,
+                            ),
+                            label: const Text('Save'),
+                            onPressed: () async {
+                              if (widget.classroom == null) {
+                                Classroom newEvent = Classroom.fromParams(
+                                  _title,
+                                  _description,
+                                  _dateTime,
+                                  _weekDays,
+                                  _url,
+                                  _importance,
+                                );
+
+                                _id = await _databaseHelper
+                                    .insertClassroom(newEvent);
+                              } else {
+                                Classroom thisClassroom =
+                                    await _databaseHelper.getClassroom(_id);
+                                thisClassroom.title = _title;
+                                thisClassroom.description = _description;
+                                thisClassroom.dateTime = _dateTime;
+                                thisClassroom.weekDays = _weekDays;
+                                thisClassroom.url = _url;
+                                thisClassroom.importance = _importance;
+
+                                _id = await _databaseHelper
+                                    .updateClassroom(thisClassroom);
+                              }
+
+                              Navigator.pop(context);
+                            },
+                          ),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
