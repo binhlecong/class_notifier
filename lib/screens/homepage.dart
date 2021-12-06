@@ -10,6 +10,21 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      body: SafeArea(
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          color: const Color(0xFFF6F6F6),
+          child: Stack(
+            children: [
+              SizedBox(
+                height: 10,
+              )
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
