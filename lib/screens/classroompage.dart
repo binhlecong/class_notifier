@@ -56,6 +56,7 @@ class _ClassroomPageState extends State<ClassroomPage> {
           padding: const EdgeInsets.fromLTRB(10, 30, 10, 30),
           child: ListView(
             children: [
+              Text(_id.toString()),
               TextField(
                 decoration: const InputDecoration(
                   hintStyle: TextStyle(fontSize: 17),
@@ -155,7 +156,7 @@ class _ClassroomPageState extends State<ClassroomPage> {
                             icon: const Icon(Icons.delete),
                             label: const Text('Delete'),
                             onPressed: () async {
-                              if (widget.classroom == null) {
+                              if (widget.classroom != null) {
                                 await _databaseHelper.deleteClassroom(_id);
                               }
                               Navigator.pop(context);
