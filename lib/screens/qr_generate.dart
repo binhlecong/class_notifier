@@ -5,18 +5,21 @@ import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class GeneratePage extends StatefulWidget {
+  const GeneratePage({Key? key}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() => _GeneratePageState();
 }
 
 class _GeneratePageState extends State<GeneratePage> {
-  String qrData = "https://github.com/tienthanh214/Flutter-Training-DevFest2021";
+  String qrData = "Class Notifier Application";
   final _qrDataFeed = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('QR Code Generator'),
+        title: const Text('QR Code Generator'),
+        centerTitle: true,
         actions: <Widget>[],
       ),
       body: _buildQRGenerator(),
@@ -58,7 +61,7 @@ class _GeneratePageState extends State<GeneratePage> {
             controller: _qrDataFeed,
           ),
           Padding(
-            padding: EdgeInsets.all(18.0),
+            padding: const EdgeInsets.all(18.0),
             child: ElevatedButton(
               child: const Text('Submit'),
               onPressed: () async { 
@@ -66,6 +69,7 @@ class _GeneratePageState extends State<GeneratePage> {
                   setState(() {
                     Classroom room = Classroom.fromParams("Title 1", "Text bro", 30, DateTime.now(), 0, "no", 1);
                     Map mRoom = room.toMap(); mRoom.remove("id");
+                    mRoom['class_notifier'] = true;
                     var json = jsonEncode(mRoom);
                     _qrDataFeed.text = json;
                     qrData = _qrDataFeed.text;
@@ -73,7 +77,6 @@ class _GeneratePageState extends State<GeneratePage> {
                 } else {
                   setState(() {
                     qrData = _qrDataFeed.text;
-                    print(qrData.length);
                   });
                 }
               },

@@ -1,4 +1,5 @@
 import 'package:class_notifier/screens/qr_generate.dart';
+import 'package:class_notifier/screens/scan_qr.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: GeneratePage(),
+      home: HomePage(),
     );
   }
 }
