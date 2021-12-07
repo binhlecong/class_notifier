@@ -27,7 +27,7 @@ class ClassroomCard extends StatelessWidget {
             right: 14.0,
           ),
           decoration: const BoxDecoration(
-            color: kGreen400,
+            color: kGreen100,
           ),
           child: Row(
             children: [
@@ -58,7 +58,7 @@ class ClassroomCard extends StatelessWidget {
                         classroom.description!,
                         style: const TextStyle(
                           fontSize: 16.0,
-                          color: kBrown50,
+                          color: kSurfaceWhite,
                           height: 1.5,
                         ),
                       ),

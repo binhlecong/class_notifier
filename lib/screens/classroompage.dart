@@ -35,7 +35,7 @@ class _ClassroomPageState extends State<ClassroomPage> {
           DateTime.now().add(const Duration(minutes: 1)),
           0,
           'https://www.google.com/',
-          1);
+          0);
     } else {
       classroom = widget.classroom!;
     }
@@ -209,7 +209,7 @@ class _ClassroomPageState extends State<ClassroomPage> {
                     NotificationApi.scheduleNotification(
                       id: _id,
                       title: classroom!.title!,
-                      body: classroom!.title!,
+                      body: classroom!.description!,
                       payload: classroom!.url,
                       scheduledDate: classroom!.dateTime!,
                     );
