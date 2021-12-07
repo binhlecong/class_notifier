@@ -1,6 +1,33 @@
-# class_notifier
+# Class Notifier App
 
-A new Flutter project.
+A final project of DevFest 2021
+-----------------------------------------
+
+## Authors:
+🧑 **Nguyễn Đăng Tiến Thành**
+- Github: [@tienthanh214](https://github.com/tienthanh214)
+
+👽 **Lê Công Bình**
+- Github: [@binhlecong](https://github.com/binhlecong)
+
+👧 **Nguyễn Lê Bảo Thi**
+- Github: [@baothi250501](https://github.com/baothi250501)
+
+👽 **Đỗ Minh Quân**
+
+
+## Installation
+``` git@github.com:binhlecong/class_notifier.git ```
+
+## Explanation of the idea/features of the application
+
+## Demo
+
+### Home Screen
+
+### Calendar Screen
+
+### QR Code Screen
 
 ## Getting Started
 
