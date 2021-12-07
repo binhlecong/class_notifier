@@ -110,7 +110,19 @@ class _HomePageState extends State<HomePage> {
           return ListView.builder(
             itemCount: snapshot.data!.length,
             itemBuilder: (BuildContext context, int index) {
-              return ClassroomCard(classroom: snapshot.data![index]);
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ClassroomPage(
+                        classroom: snapshot.data![index],
+                      ),
+                    ),
+                  ).then((value) => setState(() {}));
+                },
+                child: ClassroomCard(classroom: snapshot.data![index]),
+              );
             },
           );
         },
