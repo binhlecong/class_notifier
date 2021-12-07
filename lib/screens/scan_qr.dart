@@ -62,28 +62,30 @@ class _ScanPageState extends State<ScanPage> {
     this.controller = controller;
     bool scanned = false;
     controller.scannedDataStream.listen((scanData) {
-      setState(() {
-        if (scanned == true) {
-          return;
-        }
-        scanned = true;
+      setState(() async {
         qrCodeResult = scanData.code;
         Map<String, dynamic> result = jsonDecode(qrCodeResult);
         if (result.containsKey('class_notifier')) {
+          if (scanned == true) return;
+          scanned = true;
+          controller.pauseCamera();
           result.remove('class_notifier');
           Classroom classroom = Classroom.fromMap(result);
-          Navigator.push(
+          dynamic pop = Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => ClassroomPage(
                 classroom: classroom,
               ),
             ),
-
           ).then((value) => {
+            controller.resumeCamera(),
             scanned = false
           });
+          // controller.resumeCamera();
+          // scanned = false;
         }
+        
       });
     });
   }

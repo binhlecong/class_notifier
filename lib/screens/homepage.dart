@@ -1,5 +1,6 @@
 import 'package:class_notifier/database/db_helper.dart';
 import 'package:class_notifier/models/classroom.dart';
+import 'package:class_notifier/screens/scan_qr.dart';
 import 'package:class_notifier/widgets/classroomcard.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
@@ -59,9 +60,7 @@ class _HomePageState extends State<HomePage> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => ClassroomPage(
-                                    classroom: null,
-                                  ),
+                                  builder: (context) => ScanPage(),
                                 ),
                               ).then((value) {
                                 setState(() {});

@@ -1,5 +1,6 @@
 import 'package:class_notifier/database/db_helper.dart';
 import 'package:class_notifier/models/classroom.dart';
+import 'package:class_notifier/screens/qr_generate.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -39,7 +40,7 @@ class _ClassroomPageState extends State<ClassroomPage> {
       appBar: AppBar(
         actions: [
           IconButton(
-            onPressed: null,
+            onPressed: _pushQRGenerator,
             icon: const Icon(
               Icons.qr_code_scanner_outlined,
               size: 35,
@@ -168,7 +169,7 @@ class _ClassroomPageState extends State<ClassroomPage> {
                   child: const Text('SAVE'),
                   onPressed: () async {
                     int _id = 0;
-                    if (widget.classroom == null) {
+                    if (widget.classroom == null || classroom!.id == null) {
                       _id = await _databaseHelper.insertClassroom(classroom!);
                     } else {
                       _id = await _databaseHelper.updateClassroom(classroom!);
@@ -209,6 +210,16 @@ class _ClassroomPageState extends State<ClassroomPage> {
           )),
         ),
       ),
+    );
+  }
+
+  void _pushQRGenerator() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => GeneratePage(
+          classroom: classroom
+        )
+      )
     );
   }
 }
