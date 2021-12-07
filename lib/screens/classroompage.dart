@@ -1,9 +1,11 @@
 import 'package:class_notifier/database/db_helper.dart';
 import 'package:class_notifier/models/classroom.dart';
 import 'package:class_notifier/screens/qr_generate.dart';
+import 'package:class_notifier/notification/notification_api.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ClassroomPage extends StatefulWidget {
   final Classroom? classroom;
@@ -26,21 +28,42 @@ class _ClassroomPageState extends State<ClassroomPage> {
   void initState() {
     if (widget.classroom == null) {
       classroom = Classroom.fromParams(
-          '<No title>', '<No description>', 0, DateTime.now(), 0, '', 1);
+          '<No title>',
+          '<No description>',
+          0,
+          DateTime.now().add(const Duration(minutes: 1)),
+          0,
+          'https://www.google.com/',
+          1);
     } else {
       classroom = widget.classroom!;
     }
 
+    NotificationApi.init(initScheduled: true);
+    listenNotifications();
+
     super.initState();
+  }
+
+  void listenNotifications() {
+    NotificationApi.onNotifications.stream.listen(onClickNotification);
+  }
+
+  void onClickNotification(String? payload) {
+    _launchURL(payload ?? 'https://www.google.com/');
+  }
+
+  void _launchURL(String url) async {
+    if (!await launch(url)) throw 'Could not launch $url';
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        actions: [
+        actions:  [
           IconButton(
-            onPressed: _pushQRGenerator,
+            onPressed: widget.classroom != null ? _pushQRGenerator : null,
             icon: const Icon(
               Icons.qr_code_scanner_outlined,
               size: 35,
@@ -61,23 +84,23 @@ class _ClassroomPageState extends State<ClassroomPage> {
           children: <Widget>[
             const SizedBox(height: 40.0),
             DateTimeField(
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Date & Time',
                 isDense: true,
-                contentPadding: const EdgeInsets.all(2),
+                contentPadding: EdgeInsets.all(2),
               ),
               format: format,
               onShowPicker: (context, currentValue) async {
                 final date = await showDatePicker(
                     context: context,
                     firstDate: DateTime(1900),
-                    initialDate: currentValue ?? DateTime.now(),
+                    initialDate: currentValue ?? classroom!.dateTime!,
                     lastDate: DateTime(2100));
                 if (date != null) {
                   final time = await showTimePicker(
                       context: context,
                       initialTime: TimeOfDay.fromDateTime(
-                        currentValue ?? DateTime.now(),
+                        currentValue ?? classroom!.dateTime!,
                       ));
 
                   classroom!.dateTime = DateTimeField.combine(date, time);
@@ -103,11 +126,11 @@ class _ClassroomPageState extends State<ClassroomPage> {
             const SizedBox(height: 10.0),
             TextField(
                 autofocus: true,
-                controller: _title,
+                controller: TextEditingController()..text = classroom!.title!,
                 decoration: const InputDecoration(
                   prefixIcon: Icon(Icons.topic_outlined),
                   filled: true,
-                  labelText: 'Tile',
+                  labelText: 'Title',
                 ),
                 onChanged: (value) {
                   classroom!.title = value;
@@ -115,7 +138,7 @@ class _ClassroomPageState extends State<ClassroomPage> {
             const SizedBox(height: 15.0),
             TextField(
               autofocus: true,
-              controller: _url,
+              controller: TextEditingController()..text = classroom!.url!,
               decoration: const InputDecoration(
                 prefixIcon: Icon(Icons.link_rounded),
                 filled: true,
@@ -128,12 +151,13 @@ class _ClassroomPageState extends State<ClassroomPage> {
             const SizedBox(height: 15.0),
             TextField(
               autofocus: true,
-              controller: _notify,
+              controller: TextEditingController()
+                ..text = classroom!.alarmBefore!.toString(),
               decoration: const InputDecoration(
                 prefixIcon: Icon(Icons.notifications_active_outlined),
                 filled: true,
                 labelText: 'Notify',
-                helperText: 'Alarm before minutes',
+                helperText: 'Alarm how many minutes earlier before class',
               ),
               onChanged: (value) {
                 classroom!.alarmBefore = int.tryParse(value) ?? 1;
@@ -143,7 +167,8 @@ class _ClassroomPageState extends State<ClassroomPage> {
             TextField(
               autofocus: true,
               maxLines: null,
-              controller: _description,
+              controller: TextEditingController()
+                ..text = classroom!.description!,
               decoration: const InputDecoration(
                 prefixIcon: Icon(Icons.description_outlined),
                 filled: true,
@@ -161,6 +186,7 @@ class _ClassroomPageState extends State<ClassroomPage> {
                   onPressed: () async {
                     if (widget.classroom != null) {
                       await _databaseHelper.deleteClassroom(classroom!.id!);
+                      NotificationApi.cancelNotification(classroom!.id!);
                     }
                     Navigator.pop(context);
                   },
@@ -173,9 +199,18 @@ class _ClassroomPageState extends State<ClassroomPage> {
                       _id = await _databaseHelper.insertClassroom(classroom!);
                     } else {
                       _id = await _databaseHelper.updateClassroom(classroom!);
+                      NotificationApi.cancelNotification(_id);
                     }
+
+                    NotificationApi.scheduleNotification(
+                      id: _id,
+                      title: classroom!.title!,
+                      body: classroom!.title!,
+                      payload: classroom!.url,
+                      scheduledDate: classroom!.dateTime!,
+                    );
+
                     Navigator.pop(context);
-                    //
                   },
                 ),
               ],
@@ -195,10 +230,10 @@ class _ClassroomPageState extends State<ClassroomPage> {
         });
       },
       child: SizedBox.fromSize(
-        size: Size.fromRadius(20.0),
+        size: const Size.fromRadius(20.0),
         child: Container(
           decoration: BoxDecoration(
-              borderRadius: new BorderRadius.circular(20.0),
+              borderRadius: BorderRadius.circular(20.0),
               color: isRepeated ? Colors.lightBlue : Colors.white70),
           child: Center(
               child: Text(
