@@ -26,8 +26,14 @@ class _ClassroomPageState extends State<ClassroomPage> {
   @override
   void initState() {
     if (widget.classroom == null) {
-      classroom = Classroom.fromParams('<No title>', '<No description>', 0,
-          DateTime.now().add(const Duration(minutes: 2)), 0, 'https://www.google.com/', 1);
+      classroom = Classroom.fromParams(
+          '<No title>',
+          '<No description>',
+          0,
+          DateTime.now().add(const Duration(minutes: 1)),
+          0,
+          'https://www.google.com/',
+          1);
     } else {
       classroom = widget.classroom!;
     }
@@ -87,13 +93,13 @@ class _ClassroomPageState extends State<ClassroomPage> {
                 final date = await showDatePicker(
                     context: context,
                     firstDate: DateTime(1900),
-                    initialDate: currentValue ?? DateTime.now(),
+                    initialDate: currentValue ?? classroom!.dateTime!,
                     lastDate: DateTime(2100));
                 if (date != null) {
                   final time = await showTimePicker(
                       context: context,
                       initialTime: TimeOfDay.fromDateTime(
-                        currentValue ?? DateTime.now(),
+                        currentValue ?? classroom!.dateTime!,
                       ));
 
                   classroom!.dateTime = DateTimeField.combine(date, time);
@@ -119,11 +125,11 @@ class _ClassroomPageState extends State<ClassroomPage> {
             const SizedBox(height: 10.0),
             TextField(
                 autofocus: true,
-                controller: _title,
+                controller: TextEditingController()..text = classroom!.title!,
                 decoration: const InputDecoration(
                   prefixIcon: Icon(Icons.topic_outlined),
                   filled: true,
-                  labelText: 'Tile',
+                  labelText: 'Title',
                 ),
                 onChanged: (value) {
                   classroom!.title = value;
@@ -131,7 +137,7 @@ class _ClassroomPageState extends State<ClassroomPage> {
             const SizedBox(height: 15.0),
             TextField(
               autofocus: true,
-              controller: _url,
+              controller: TextEditingController()..text = classroom!.url!,
               decoration: const InputDecoration(
                 prefixIcon: Icon(Icons.link_rounded),
                 filled: true,
@@ -144,12 +150,13 @@ class _ClassroomPageState extends State<ClassroomPage> {
             const SizedBox(height: 15.0),
             TextField(
               autofocus: true,
-              controller: _notify,
+              controller: TextEditingController()
+                ..text = classroom!.alarmBefore!.toString(),
               decoration: const InputDecoration(
                 prefixIcon: Icon(Icons.notifications_active_outlined),
                 filled: true,
                 labelText: 'Notify',
-                helperText: 'Alarm before minutes',
+                helperText: 'Alarm how many minutes earlier before class',
               ),
               onChanged: (value) {
                 classroom!.alarmBefore = int.tryParse(value) ?? 1;
@@ -159,7 +166,8 @@ class _ClassroomPageState extends State<ClassroomPage> {
             TextField(
               autofocus: true,
               maxLines: null,
-              controller: _description,
+              controller: TextEditingController()
+                ..text = classroom!.description!,
               decoration: const InputDecoration(
                 prefixIcon: Icon(Icons.description_outlined),
                 filled: true,
@@ -177,6 +185,7 @@ class _ClassroomPageState extends State<ClassroomPage> {
                   onPressed: () async {
                     if (widget.classroom != null) {
                       await _databaseHelper.deleteClassroom(classroom!.id!);
+                      NotificationApi.cancelNotification(classroom!.id!);
                     }
                     Navigator.pop(context);
                   },
