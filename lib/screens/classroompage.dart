@@ -51,7 +51,7 @@ class _ClassroomPageState extends State<ClassroomPage> {
   }
 
   void onClickNotification(String? payload) {
-    _launchURL(payload ?? 'https://www.google.com/');
+    _launchURL(payload!);
   }
 
   void _launchURL(String url) async {
@@ -127,7 +127,8 @@ class _ClassroomPageState extends State<ClassroomPage> {
             const SizedBox(height: 10.0),
             TextField(
                 autofocus: true,
-                controller: TextEditingController()..text = classroom!.title!,
+                controller: TextEditingController()
+                  ..text = widget.classroom == null ? '' : classroom!.title!,
                 decoration: const InputDecoration(
                   prefixIcon: Icon(Icons.topic_outlined),
                   filled: true,
@@ -139,7 +140,8 @@ class _ClassroomPageState extends State<ClassroomPage> {
             const SizedBox(height: 15.0),
             TextField(
               autofocus: true,
-              controller: TextEditingController()..text = classroom!.url!,
+              controller: TextEditingController()
+                ..text = widget.classroom == null ? '' : classroom!.url!,
               decoration: const InputDecoration(
                 prefixIcon: Icon(Icons.link_rounded),
                 filled: true,
@@ -169,7 +171,8 @@ class _ClassroomPageState extends State<ClassroomPage> {
               autofocus: true,
               maxLines: null,
               controller: TextEditingController()
-                ..text = classroom!.description!,
+                ..text =
+                    widget.classroom == null ? '' : classroom!.description!,
               decoration: const InputDecoration(
                 prefixIcon: Icon(Icons.description_outlined),
                 filled: true,
@@ -179,7 +182,7 @@ class _ClassroomPageState extends State<ClassroomPage> {
                 classroom!.description = value;
               },
             ),
-            const SizedBox(height: 100.0),
+            const SizedBox(height: 15.0),
             ButtonBar(
               children: <Widget>[
                 TextButton(

@@ -20,14 +20,21 @@ class ClassroomCard extends StatelessWidget {
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(16.0),
-        child: GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ClassroomPage(
-                  classroom: classroom,
-                ),
+        child: Container(
+          height: 100,
+          width: double.infinity,
+          padding: const EdgeInsets.only(
+            right: 14.0,
+          ),
+          decoration: const BoxDecoration(
+            color: Colors.blueGrey,
+          ),
+          child: Row(
+            children: [
+              Container(
+                color: classroom.getColorImportance(),
+                width: 16.0,
+                height: double.infinity,
               ),
             );
           },
@@ -89,20 +96,47 @@ class ClassroomCard extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(
                     vertical: 10.0,
                   ),
-                  child: Center(
-                    child: Text(
-                      formatter.format(
-                        classroom.dateTime ?? DateTime.now(),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Text(
+                        classroom.title!,
+                        style: const TextStyle(
+                          color: Color(0xFF211551),
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       style: const TextStyle(
                         color: kBrown900,
                         fontSize: 28.0,
                       ),
+                      Text(
+                        classroom.getWeekDaysStr(),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              Container(
+                height: double.infinity,
+                width: 80.0,
+                padding: const EdgeInsets.symmetric(
+                  vertical: 10.0,
+                ),
+                child: Center(
+                  child: Text(
+                    formatter.format(
+                      classroom.dateTime ?? DateTime.now(),
+                    ),
+                    style: const TextStyle(
+                      fontSize: 28.0,
                     ),
                   ),
-                )
-              ],
-            ),
+                ),
+              )
+            ],
           ),
         ),
       ),
