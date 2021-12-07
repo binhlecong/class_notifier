@@ -1,8 +1,10 @@
 import 'package:class_notifier/database/db_helper.dart';
 import 'package:class_notifier/models/classroom.dart';
+import 'package:class_notifier/notification/notification_api.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ClassroomPage extends StatefulWidget {
   final Classroom? classroom;
@@ -24,23 +26,38 @@ class _ClassroomPageState extends State<ClassroomPage> {
   @override
   void initState() {
     if (widget.classroom == null) {
-      classroom = Classroom.fromParams(
-          '<No title>', '<No description>', 0, DateTime.now(), 0, '', 1);
+      classroom = Classroom.fromParams('<No title>', '<No description>', 0,
+          DateTime.now().add(const Duration(minutes: 2)), 0, 'https://www.google.com/', 1);
     } else {
       classroom = widget.classroom!;
     }
 
+    NotificationApi.init(initScheduled: true);
+    listenNotifications();
+
     super.initState();
+  }
+
+  void listenNotifications() {
+    NotificationApi.onNotifications.stream.listen(onClickNotification);
+  }
+
+  void onClickNotification(String? payload) {
+    _launchURL(payload ?? 'https://www.google.com/');
+  }
+
+  void _launchURL(String url) async {
+    if (!await launch(url)) throw 'Could not launch $url';
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        actions: [
+        actions: const [
           IconButton(
             onPressed: null,
-            icon: const Icon(
+            icon: Icon(
               Icons.qr_code_scanner_outlined,
               size: 35,
             ),
@@ -60,10 +77,10 @@ class _ClassroomPageState extends State<ClassroomPage> {
           children: <Widget>[
             const SizedBox(height: 40.0),
             DateTimeField(
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Date & Time',
                 isDense: true,
-                contentPadding: const EdgeInsets.all(2),
+                contentPadding: EdgeInsets.all(2),
               ),
               format: format,
               onShowPicker: (context, currentValue) async {
@@ -172,9 +189,18 @@ class _ClassroomPageState extends State<ClassroomPage> {
                       _id = await _databaseHelper.insertClassroom(classroom!);
                     } else {
                       _id = await _databaseHelper.updateClassroom(classroom!);
+                      NotificationApi.cancelNotification(_id);
                     }
+
+                    NotificationApi.scheduleNotification(
+                      id: _id,
+                      title: classroom!.title!,
+                      body: classroom!.title!,
+                      payload: classroom!.url,
+                      scheduledDate: classroom!.dateTime!,
+                    );
+
                     Navigator.pop(context);
-                    //
                   },
                 ),
               ],
@@ -194,10 +220,10 @@ class _ClassroomPageState extends State<ClassroomPage> {
         });
       },
       child: SizedBox.fromSize(
-        size: Size.fromRadius(20.0),
+        size: const Size.fromRadius(20.0),
         child: Container(
           decoration: BoxDecoration(
-              borderRadius: new BorderRadius.circular(20.0),
+              borderRadius: BorderRadius.circular(20.0),
               color: isRepeated ? Colors.lightBlue : Colors.white70),
           child: Center(
               child: Text(
