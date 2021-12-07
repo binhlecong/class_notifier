@@ -44,7 +44,6 @@ class _ClassroomPageState extends State<ClassroomPage> {
               Icons.qr_code_scanner_outlined,
               size: 35,
             ),
-            tooltip: 'Saved Suggestions',
           )
         ],
         leading: IconButton(
