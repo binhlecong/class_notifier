@@ -1,3 +1,4 @@
+import 'package:class_notifier/screens/qr_generate.dart';
 import 'package:flutter/material.dart';
 
 import 'screens/homepage.dart';
@@ -9,9 +10,9 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: HomePage(),
+      home: GeneratePage(),
     );
   }
 }

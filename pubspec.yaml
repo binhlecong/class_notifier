@@ -11,11 +11,12 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
   cupertino_icons: ^1.0.2
   sqflite:
   path:
   datetime_picker_formfield:
+  qr_flutter: ^4.0.0
+
 
 dev_dependencies:
   flutter_test:
