@@ -31,12 +31,12 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   Container(
                     height: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       borderRadius: BorderRadius.only(
                         bottomLeft: Radius.circular(30.0),
                         bottomRight: Radius.circular(30.0),
                       ),
-                      boxShadow: const [
+                      boxShadow: [
                         BoxShadow(
                           offset: Offset(0.0, 2.0),
                           blurRadius: 5.0,
@@ -44,7 +44,7 @@ class _HomePageState extends State<HomePage> {
                       ],
                     ),
                     child: ClipRRect(
-                      borderRadius: BorderRadius.only(
+                      borderRadius: const BorderRadius.only(
                         bottomLeft: Radius.circular(30.0),
                         bottomRight: Radius.circular(30.0),
                       ),
@@ -116,19 +116,25 @@ class _HomePageState extends State<HomePage> {
           return ListView.builder(
             itemCount: snapshot.data!.length,
             itemBuilder: (BuildContext context, int index) {
-              return GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ClassroomPage(
-                        classroom: snapshot.data![index],
+              if (snapshot.hasData) {
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ClassroomPage(
+                          classroom: snapshot.data![index],
+                        ),
                       ),
-                    ),
-                  ).then((value) => setState(() {}));
-                },
-                child: ClassroomCard(classroom: snapshot.data![index]),
-              );
+                    ).then((value) => setState(() {}));
+                  },
+                  child: ClassroomCard(classroom: snapshot.data![index]),
+                );
+              } else {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
             },
           );
         },
