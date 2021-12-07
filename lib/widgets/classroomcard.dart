@@ -13,6 +13,7 @@ class ClassroomCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(
         vertical: 10.0,
+        horizontal: 10.0,
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(16.0),
