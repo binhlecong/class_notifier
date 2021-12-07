@@ -5,18 +5,32 @@ import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class GeneratePage extends StatefulWidget {
+  final Classroom? classroom;
+  String qrData = "No thing";
+  GeneratePage({Key? key, required this.classroom}) : super(key: key) {
+    if (classroom != null) {
+      Map mRoom = classroom!.toMap();
+      mRoom.remove("id");
+      mRoom['class_notifier'] = true;
+      var json = jsonEncode(mRoom);
+      qrData = json;
+    }
+  }
+
   @override
   State<StatefulWidget> createState() => _GeneratePageState();
 }
 
 class _GeneratePageState extends State<GeneratePage> {
-  String qrData = "https://github.com/tienthanh214/Flutter-Training-DevFest2021";
-  final _qrDataFeed = TextEditingController();
+  String qrData = "Class Notifier Application";
+  // final _qrDataFeed = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    qrData = widget.qrData;
     return Scaffold(
       appBar: AppBar(
-        title: Text('QR Code Generator'),
+        title: const Text('QR Code Generator'),
+        centerTitle: true,
         actions: <Widget>[],
       ),
       body: _buildQRGenerator(),
@@ -24,6 +38,7 @@ class _GeneratePageState extends State<GeneratePage> {
   }
 
   Widget _buildQRGenerator() {
+    print(qrData);
     return SafeArea(
       child: ListView(
         padding: const EdgeInsets.all(18.0),
@@ -33,7 +48,7 @@ class _GeneratePageState extends State<GeneratePage> {
             children: <Widget>[
               Text(
                 'QR Code Result',
-                style: Theme.of(context).textTheme.headline2,
+                style: Theme.of(context).textTheme.headline4,
               )
             ],
           ),
@@ -53,32 +68,32 @@ class _GeneratePageState extends State<GeneratePage> {
               },
             ),
           ),
-          const SizedBox(height: 40.0),
-          TextField(
-            controller: _qrDataFeed,
-          ),
-          Padding(
-            padding: EdgeInsets.all(18.0),
-            child: ElevatedButton(
-              child: const Text('Submit'),
-              onPressed: () async { 
-                if (_qrDataFeed.text.isEmpty) {
-                  setState(() {
-                    Classroom room = Classroom.fromParams("Title 1", "Text bro", 30, DateTime.now(), 0, "no", 1);
-                    Map mRoom = room.toMap(); mRoom.remove("id");
-                    var json = jsonEncode(mRoom);
-                    _qrDataFeed.text = json;
-                    qrData = _qrDataFeed.text;
-                  });
-                } else {
-                  setState(() {
-                    qrData = _qrDataFeed.text;
-                    print(qrData.length);
-                  });
-                }
-              },
-            )
-          )
+          // const SizedBox(height: 40.0),
+          // TextField(
+          //   controller: _qrDataFeed,
+          // ),
+          // Padding(
+          //   padding: const EdgeInsets.all(18.0),
+          //   child: ElevatedButton(
+          //     child: const Text('Submit'),
+          //     onPressed: () async { 
+          //       if (_qrDataFeed.text.isEmpty) {
+          //         setState(() {
+          //           Classroom room = Classroom.fromParams("Title 1", "Text bro", 30, DateTime.now(), 0, "no", 1);
+          //           Map mRoom = room.toMap(); mRoom.remove("id");
+          //           mRoom['class_notifier'] = true;
+          //           var json = jsonEncode(mRoom);
+          //           _qrDataFeed.text = json;
+          //           qrData = _qrDataFeed.text;
+          //         });
+          //       } else {
+          //         setState(() {
+          //           qrData = _qrDataFeed.text;
+          //         });
+          //       }
+          //     },
+          //   )
+          // )
   
         ],
       ),

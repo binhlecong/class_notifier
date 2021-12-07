@@ -1,6 +1,5 @@
-import 'package:class_notifier/screens/qr_generate.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
 
 import 'screens/homepage.dart';
 import 'styles/colors.dart';
