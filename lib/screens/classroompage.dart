@@ -22,7 +22,7 @@ class _ClassroomPageState extends State<ClassroomPage> {
   void initState() {
     if (widget.classroom == null) {
       classroom = Classroom.fromParams(
-          '<No title>', '<No description>', DateTime.now(), 0, '', 2);
+          '<No title>', '<No description>', 0, DateTime.now(), 0, '', 1);
     } else {
       classroom = widget.classroom!;
     }
@@ -55,6 +55,8 @@ class _ClassroomPageState extends State<ClassroomPage> {
                 onChanged: (value) {
                   classroom!.title = value;
                 },
+                controller: TextEditingController()
+                              ..text = classroom!.title!,
               ),
               TextField(
                 decoration: const InputDecoration(
@@ -65,6 +67,20 @@ class _ClassroomPageState extends State<ClassroomPage> {
                 onChanged: (value) {
                   classroom!.description = value;
                 },
+                controller: TextEditingController()
+                              ..text = classroom!.description!,
+              ),
+              TextField(
+                decoration: const InputDecoration(
+                  hintStyle: TextStyle(fontSize: 17),
+                  hintText: 'alarm before minutes:',
+                  contentPadding: EdgeInsets.all(20),
+                ),
+                onChanged: (value) {
+                  classroom!.alarmBefore = int.tryParse(value) ?? 1;
+                },
+                controller: TextEditingController()
+                              ..text = classroom!.alarmBefore!.toString(),
               ),
               DateTimeField(
                 decoration: InputDecoration(
@@ -113,6 +129,8 @@ class _ClassroomPageState extends State<ClassroomPage> {
                 onChanged: (value) {
                   classroom!.url = value;
                 },
+                controller: TextEditingController()
+                              ..text = classroom!.url!,
               ),
               TextField(
                 decoration: const InputDecoration(
@@ -123,6 +141,8 @@ class _ClassroomPageState extends State<ClassroomPage> {
                 onChanged: (value) {
                   classroom!.importance = int.tryParse(value) ?? 1;
                 },
+                controller: TextEditingController()
+                              ..text = classroom!.importance!.toString(),
               ),
               Expanded(
                 child: Column(

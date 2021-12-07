@@ -1,20 +1,32 @@
 import 'package:flutter/material.dart';
 
 class Classroom {
+  static final List<String> DAY_NAMES = [
+    'Mon',
+    'Tue',
+    'Wed',
+    'Thu',
+    'Fri',
+    'Sat',
+    'Sun',
+  ];
+
   int? id;
   String? title;
+  String? description;
+  int? alarmBefore;
   DateTime? dateTime;
   int? weekDays;
-  String? description;
   String? url;
   int? importance;
 
   Classroom();
 
-  Classroom.fromParams(String title, String description, DateTime dateTime,
-      int weekDays, String url, int importance) {
+  Classroom.fromParams(String title, String description, int alarmBefore,
+      DateTime dateTime, int weekDays, String url, int importance) {
     this.title = title;
     this.description = description;
+    this.alarmBefore = alarmBefore;
     this.dateTime = dateTime;
     this.weekDays = weekDays;
     this.url = url;
@@ -25,6 +37,7 @@ class Classroom {
     id = json['id'];
     title = json['title'];
     description = json['description'];
+    alarmBefore = json['alarmBefore'];
     dateTime = DateTime.parse(json['dateTime']);
     weekDays = json['weekDays'];
     url = json['url'];
@@ -35,6 +48,7 @@ class Classroom {
         'id': id,
         'title': title,
         'description': description,
+        'alarmBefore': alarmBefore,
         'dateTime': dateTime!.toIso8601String(),
         'weekDays': weekDays,
         'url': url,
@@ -70,12 +84,11 @@ class Classroom {
     }
   }
 
-  String getWeekDays() {
-    List<String> dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+  String getWeekDaysStr() {
     String res = '';
     for (var i = 0; i < 7; i++) {
       if (isRepeatAt(i)) {
-        res += dayNames[i] + '  ';
+        res += DAY_NAMES[i] + '  ';
       }
     }
     if (res.isEmpty) {

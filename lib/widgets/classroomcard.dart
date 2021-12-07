@@ -59,7 +59,7 @@ class ClassroomCard extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        classroom.getWeekDays(),
+                        classroom.getWeekDaysStr(),
                       )
                     ],
                   ),
