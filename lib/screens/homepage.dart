@@ -2,6 +2,7 @@ import 'package:class_notifier/database/db_helper.dart';
 import 'package:class_notifier/models/classroom.dart';
 import 'package:class_notifier/widgets/classroomcard.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 import 'classroompage.dart';
 
@@ -18,78 +19,101 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: const Icon(Icons.book),
-        title: const Text('Class Notifier'),
-      ),
-      body: SafeArea(
-        child: Container(
-          width: double.infinity,
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          color: const Color(0xFFF6F6F6),
-          child: Stack(
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+      resizeToAvoidBottomInset: false,
+      body: Stack(
+        children: [
+          Column(
+            children: <Widget>[
+              Stack(
                 children: [
-                  Expanded(
-                    child: FutureBuilder<List<Classroom>>(
-                      initialData: const [],
-                      future: _dbHelper.getClassrooms(),
-                      builder: (context, snapshot) {
-                        return ListView.builder(
-                          itemCount: snapshot.data!.length,
-                          itemBuilder: (context, index) {
-                            return GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ClassroomPage(
-                                      classroom: snapshot.data![index],
-                                    ),
+                  Container(
+                    height: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30.0),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Colors.lightGreen,
+                          offset: Offset(0.0, 2.0),
+                          blurRadius: 5.0,
+                        ),
+                      ],
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(30.0),
+                      child: Lottie.asset(
+                        'assets/happy-study.json',
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10.0, vertical: 40.0),
+                    child: Row(
+                      children: <Widget>[
+                        IconButton(
+                            icon: const Icon(Icons.qr_code),
+                            iconSize: 30.0,
+                            color: Colors.black,
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ClassroomPage(
+                                    classroom: null,
                                   ),
-                                ).then(
-                                  (value) {
-                                    setState(() {});
-                                  },
-                                );
-                              },
-                              child: ClassroomCard(
-                                classroom: snapshot.data![index],
-                              ),
-                            );
-                          },
-                        );
-                      },
+                                ),
+                              ).then((value) {
+                                setState(() {});
+                              });
+                            }),
+                      ],
                     ),
                   ),
                 ],
               ),
-              Positioned(
-                bottom: 24.0,
-                right: 0.0,
-                child: FloatingActionButton(
-                  child: const Icon(
-                    Icons.add,
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ClassroomPage(
-                          classroom: null,
-                        ),
-                      ),
-                    ).then((value) {
-                      setState(() {});
-                    });
-                  },
-                ),
-              )
+              _buildList(),
             ],
           ),
-        ),
+          Positioned(
+            bottom: 24.0,
+            right: 24.0,
+            child: FloatingActionButton(
+              child: const Icon(
+                Icons.add,
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ClassroomPage(
+                      classroom: null,
+                    ),
+                  ),
+                ).then((value) {
+                  setState(() {});
+                });
+              },
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Expanded _buildList() {
+    return Expanded(
+      child: FutureBuilder<List<Classroom>>(
+        initialData: const [],
+        future: _dbHelper.getClassrooms(),
+        builder: (context, snapshot) {
+          return ListView.builder(
+            itemCount: snapshot.data!.length,
+            itemBuilder: (BuildContext context, int index) {
+              return ClassroomCard(classroom: snapshot.data![index]);
+            },
+          );
+        },
       ),
     );
   }
