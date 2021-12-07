@@ -1,10 +1,12 @@
 import 'package:class_notifier/database/db_helper.dart';
 import 'package:class_notifier/models/classroom.dart';
+import 'package:class_notifier/screens/scan_qr.dart';
 import 'package:class_notifier/widgets/classroomcard.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
 import 'classroompage.dart';
+import 'package:class_notifier/styles/colors.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -19,6 +21,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: kGreen50,
       resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
@@ -29,17 +32,22 @@ class _HomePageState extends State<HomePage> {
                   Container(
                     height: MediaQuery.of(context).size.width,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30.0),
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(30.0),
+                        bottomRight: Radius.circular(30.0),
+                      ),
                       boxShadow: const [
                         BoxShadow(
-                          color: Colors.lightGreen,
                           offset: Offset(0.0, 2.0),
                           blurRadius: 5.0,
                         ),
                       ],
                     ),
                     child: ClipRRect(
-                      borderRadius: BorderRadius.circular(30.0),
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(30.0),
+                        bottomRight: Radius.circular(30.0),
+                      ),
                       child: Lottie.asset(
                         'assets/happy-study.json',
                         fit: BoxFit.cover,
@@ -59,9 +67,7 @@ class _HomePageState extends State<HomePage> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => ClassroomPage(
-                                    classroom: null,
-                                  ),
+                                  builder: (context) => ScanPage(),
                                 ),
                               ).then((value) {
                                 setState(() {});

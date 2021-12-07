@@ -1,9 +1,11 @@
 import 'package:class_notifier/database/db_helper.dart';
 import 'package:class_notifier/models/classroom.dart';
+import 'package:class_notifier/screens/qr_generate.dart';
 import 'package:class_notifier/notification/notification_api.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:class_notifier/styles/colors.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ClassroomPage extends StatefulWidget {
@@ -60,10 +62,10 @@ class _ClassroomPageState extends State<ClassroomPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        actions: const [
+        actions:  [
           IconButton(
-            onPressed: null,
-            icon: Icon(
+            onPressed: widget.classroom != null ? _pushQRGenerator : null,
+            icon: const Icon(
               Icons.qr_code_scanner_outlined,
               size: 35,
             ),
@@ -197,7 +199,7 @@ class _ClassroomPageState extends State<ClassroomPage> {
                   child: const Text('SAVE'),
                   onPressed: () async {
                     int _id = 0;
-                    if (widget.classroom == null) {
+                    if (widget.classroom == null || classroom!.id == null) {
                       _id = await _databaseHelper.insertClassroom(classroom!);
                     } else {
                       _id = await _databaseHelper.updateClassroom(classroom!);
@@ -235,18 +237,28 @@ class _ClassroomPageState extends State<ClassroomPage> {
         size: const Size.fromRadius(20.0),
         child: Container(
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20.0),
-              color: isRepeated ? Colors.lightBlue : Colors.white70),
+              borderRadius: new BorderRadius.circular(20.0),
+              color: isRepeated ? kGreen300 : Colors.white70),
           child: Center(
               child: Text(
             name,
             style: TextStyle(
               fontSize: 18,
-              color: isRepeated ? Colors.white : Colors.black,
+              color: isRepeated ? Colors.white : kBrown900,
             ),
           )),
         ),
       ),
+    );
+  }
+
+  void _pushQRGenerator() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => GeneratePage(
+          classroom: classroom
+        )
+      )
     );
   }
 }

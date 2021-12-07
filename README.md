@@ -14,7 +14,7 @@ A final project of DevFest 2021
 - Github: [@baothi250501](https://github.com/baothi250501)
 
 👽 **Đỗ Minh Quân**
-
+- Github: [@Gideon2801](https://github.com/Gideon2801)
 
 ## Installation
 ``` git@github.com:binhlecong/class_notifier.git ```
