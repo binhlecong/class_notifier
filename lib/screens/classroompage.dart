@@ -3,6 +3,7 @@ import 'package:class_notifier/models/classroom.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:class_notifier/styles/colors.dart';
 
 class ClassroomPage extends StatefulWidget {
   final Classroom? classroom;
@@ -198,13 +199,13 @@ class _ClassroomPageState extends State<ClassroomPage> {
         child: Container(
           decoration: BoxDecoration(
               borderRadius: new BorderRadius.circular(20.0),
-              color: isRepeated ? Colors.lightBlue : Colors.white70),
+              color: isRepeated ? kGreen300 : Colors.white70),
           child: Center(
               child: Text(
             name,
             style: TextStyle(
               fontSize: 18,
-              color: isRepeated ? Colors.white : Colors.black,
+              color: isRepeated ? Colors.white : kBrown900,
             ),
           )),
         ),

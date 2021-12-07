@@ -3,6 +3,8 @@ import 'package:class_notifier/screens/classroompage.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; // for date format
 
+import 'package:class_notifier/styles/colors.dart';
+
 class ClassroomCard extends StatelessWidget {
   final Classroom classroom;
   const ClassroomCard({Key? key, required this.classroom}) : super(key: key);
@@ -36,7 +38,7 @@ class ClassroomCard extends StatelessWidget {
               right: 14.0,
             ),
             decoration: const BoxDecoration(
-              color: Colors.blueGrey,
+              color: kGreen400,
             ),
             child: Row(
               children: [
@@ -58,7 +60,7 @@ class ClassroomCard extends StatelessWidget {
                         Text(
                           classroom.title!,
                           style: const TextStyle(
-                            color: Color(0xFF211551),
+                            color: kBrown1000,
                             fontSize: 18.0,
                             fontWeight: FontWeight.bold,
                           ),
@@ -67,12 +69,15 @@ class ClassroomCard extends StatelessWidget {
                           classroom.description!,
                           style: const TextStyle(
                             fontSize: 16.0,
-                            color: Colors.white38,
+                            color: kBrown50,
                             height: 1.5,
                           ),
                         ),
                         Text(
                           classroom.getWeekDaysStr(),
+                          style: const TextStyle(
+                            color: kBrown900
+                          ),
                         )
                       ],
                     ),
@@ -90,6 +95,7 @@ class ClassroomCard extends StatelessWidget {
                         classroom.dateTime ?? DateTime.now(),
                       ),
                       style: const TextStyle(
+                        color: kBrown900,
                         fontSize: 28.0,
                       ),
                     ),
