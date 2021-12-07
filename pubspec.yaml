@@ -16,6 +16,7 @@ dependencies:
   sqflite:
   path:
   datetime_picker_formfield:
+  flutter_local_notifications: ^9.1.4
 
 dev_dependencies:
   flutter_test:
