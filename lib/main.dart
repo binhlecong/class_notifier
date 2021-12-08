@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'screens/homepage.dart';
 import 'styles/colors.dart';
 
-final ThemeData _kTheme = _buildTheme();
-
 ThemeData _buildTheme() {
   final ThemeData base = ThemeData.light();
   return base.copyWith(

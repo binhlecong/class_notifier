@@ -1,5 +1,4 @@
 import 'package:class_notifier/models/classroom.dart';
-import 'package:class_notifier/screens/classroompage.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; // for date format
 

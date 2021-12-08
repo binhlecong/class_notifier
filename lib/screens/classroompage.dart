@@ -120,7 +120,7 @@ class _ClassroomPageState extends State<ClassroomPage> {
                 buildDaySelector('Su', 6),
               ],
             ),
-            const SizedBox(height: 10.0),
+            const SizedBox(height: 15.0),
             TextField(
                 autofocus: true,
                 controller: TextEditingController()
@@ -155,8 +155,7 @@ class _ClassroomPageState extends State<ClassroomPage> {
               decoration: const InputDecoration(
                 prefixIcon: Icon(Icons.notifications_active_outlined),
                 filled: true,
-                labelText: 'Notify',
-                helperText: 'Alarm how many minutes earlier before class',
+                labelText: 'Notify before class (minutes)',
               ),
               onChanged: (value) {
                 classroom!.alarmBefore = int.tryParse(value) ?? 1;
@@ -177,6 +176,22 @@ class _ClassroomPageState extends State<ClassroomPage> {
               onChanged: (value) {
                 classroom!.description = value;
               },
+            ),
+            const SizedBox(height: 20.0),
+            const Text(
+              'Importance level'
+            ),
+            Slider(
+              value: classroom!.importance!.toDouble(),
+              onChanged: (newValue) {
+                setState(() {
+                  classroom!.importance = newValue.toInt();
+                });
+              },
+              divisions: 4,
+              label: '${classroom!.importance}',
+              min: 0,
+              max: 4,
             ),
             const SizedBox(height: 15.0),
             ButtonBar(
@@ -235,7 +250,7 @@ class _ClassroomPageState extends State<ClassroomPage> {
         size: const Size.fromRadius(20.0),
         child: Container(
           decoration: BoxDecoration(
-              borderRadius: new BorderRadius.circular(20.0),
+              borderRadius: BorderRadius.circular(20.0),
               color: isRepeated ? kGreen300 : Colors.white70),
           child: Center(
               child: Text(

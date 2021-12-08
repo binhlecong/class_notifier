@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Classroom {
-  static final List<String> DAY_NAMES = [
+  static const List<String> dayNames = [
     'Mon',
     'Tue',
     'Wed',
@@ -88,7 +88,7 @@ class Classroom {
     String res = '';
     for (var i = 0; i < 7; i++) {
       if (isRepeatAt(i)) {
-        res += DAY_NAMES[i] + '  ';
+        res += dayNames[i] + '  ';
       }
     }
     if (res.isEmpty) {

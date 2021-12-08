@@ -92,7 +92,6 @@ class _ScanPageState extends State<ScanPage> {
 
   @override
   void reassemble() {
-    print("@@@ hihihi");
     super.reassemble();
     if (Platform.isAndroid) {
       controller!.pauseCamera();
