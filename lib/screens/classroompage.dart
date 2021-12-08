@@ -31,7 +31,7 @@ class _ClassroomPageState extends State<ClassroomPage> {
           DateTime.now().add(const Duration(minutes: 1)),
           0,
           'https://www.google.com/',
-          4);
+          0);
     } else {
       classroom = widget.classroom!;
     }
