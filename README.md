@@ -37,12 +37,15 @@ Moreover, Class Notifier also make it easy for student to share class info among
 <img src="./readme_assets/demo_homepage.jpg" height=500 />
 
 ### Add/Edit Classroom Screen
-<img src="./readme_assets/demo_classroompage.jpg" height=500 />
-
-### Calendar Screen
+<img src="./readme_assets/Add.gif" alt="Add classroom" height=500>
 
 ### QR Code Screen
 <img src="./readme_assets/demo_qr.gif" alt="QR code" height=500>
+
+## Notification
+<img src="./readme_assets/Notify.gif" alt="QR code" height=500>
+
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
