@@ -34,6 +34,7 @@ Moreover, Class Notifier also make it easy for student to share class info among
 ## Demo
 
 ### Home Screen
+<img src="./readme_assets/demo_homepage.jpg" height=500 />
 
 ### Calendar Screen
 
