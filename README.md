@@ -42,7 +42,7 @@ Moreover, Class Notifier also make it easy for student to share class info among
 ### Calendar Screen
 
 ### QR Code Screen
-
+<img src="./readme_assets/demo_qr.gif" alt="QR code" height=500>
 ## Getting Started
 
 This project is a starting point for a Flutter application.
