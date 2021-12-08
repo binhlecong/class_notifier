@@ -17,8 +17,19 @@ A final project of DevFest 2021
 - Github: [@Gideon2801](https://github.com/Gideon2801)
 
 ## Ideas
-<p>Students all over the world have to attend online classes, which involves joining online meetings via URLs. This app is created to facilitate online studying by **delivering online link through push notification**, helping students join class on time and easily.</p>
-<p>Moreover, Class Notifier also make it easy for student to share class info among friends. A student can create a classroom info and then share it with his/her friends by **creating a QR code from that class**. The app will **scans the QR code and automatically imports** the class into the list.</p> 
+Due to the COVID pandemic, students all over the world have to attend online classes, which involves joining online meetings via URLs. This app is created to facilitate online studying by **delivering online link through push notification**, helping students join class on time and easily.<br><br>
+Moreover, Class Notifier also make it easy for student to share class info among friends. A student can create a classroom info and then share it with his/her friends by **creating a QR code from that class**. The app will **scans the QR code and automatically imports** the class into the list.
+
+## Features
+- Save class infomation to database
+    - Select importance of class
+    - Specify a URL leading to the class
+    - Alarm before a certain amount of time
+- Push notification remind student to join class
+    - Click on notification to open link instantly
+    - Set class as a one-time event or repeated weekly
+- Create a QR code that contain info of a classroom
+- Scan the QR code and import class information
 
 ## Demo
 
