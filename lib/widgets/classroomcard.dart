@@ -48,6 +48,7 @@ class ClassroomCard extends StatelessWidget {
                     children: [
                       Text(
                         classroom.title!,
+                        overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
                           color: kBrown1000,
                           fontSize: 18.0,
@@ -56,6 +57,7 @@ class ClassroomCard extends StatelessWidget {
                       ),
                       Text(
                         classroom.description!,
+                        overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
                           fontSize: 16.0,
                           color: kSurfaceWhite,

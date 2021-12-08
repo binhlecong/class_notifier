@@ -17,11 +17,7 @@ class ClassroomPage extends StatefulWidget {
 }
 
 class _ClassroomPageState extends State<ClassroomPage> {
-  final _title = TextEditingController();
-  final _url = TextEditingController();
-  final _notify = TextEditingController();
-  final _description = TextEditingController();
-  DatabaseHelper _databaseHelper = DatabaseHelper();
+  final DatabaseHelper _databaseHelper = DatabaseHelper();
   final format = DateFormat("yyyy-MM-dd HH:mm");
   Classroom? classroom = null;
 
@@ -35,7 +31,7 @@ class _ClassroomPageState extends State<ClassroomPage> {
           DateTime.now().add(const Duration(minutes: 1)),
           0,
           'https://www.google.com/',
-          0);
+          4);
     } else {
       classroom = widget.classroom!;
     }
