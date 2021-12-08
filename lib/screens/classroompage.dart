@@ -58,7 +58,7 @@ class _ClassroomPageState extends State<ClassroomPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        actions:  [
+        actions: [
           IconButton(
             onPressed: widget.classroom != null ? _pushQRGenerator : null,
             icon: const Icon(
@@ -207,7 +207,9 @@ class _ClassroomPageState extends State<ClassroomPage> {
                       title: classroom!.title!,
                       body: classroom!.description!,
                       payload: classroom!.url,
-                      scheduledDate: classroom!.dateTime!,
+                      scheduledDate: classroom!.dateTime!.subtract(Duration(
+                        minutes: classroom!.alarmBefore!,
+                      )),
                     );
 
                     Navigator.pop(context);
@@ -249,12 +251,7 @@ class _ClassroomPageState extends State<ClassroomPage> {
   }
 
   void _pushQRGenerator() {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => GeneratePage(
-          classroom: classroom
-        )
-      )
-    );
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => GeneratePage(classroom: classroom)));
   }
 }

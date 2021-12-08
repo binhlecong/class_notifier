@@ -16,8 +16,9 @@ A final project of DevFest 2021
 👽 **Đỗ Minh Quân**
 - Github: [@Gideon2801](https://github.com/Gideon2801)
 
-## Explanation of the idea/features of the application
-This app is used for....
+## Ideas
+<p>Students all over the world have to attend online classes, which involves joining online meetings via URLs. This app is created to facilitate online studying by **delivering online link through push notification**, helping students join class on time and easily.</p>
+<p>Moreover, Class Notifier also make it easy for student to share class info among friends. A student can create a classroom info and then share it with his/her friends by **creating a QR code from that class**. The app will **scans the QR code and automatically imports** the class into the list.</p> 
 
 ## Demo
 
