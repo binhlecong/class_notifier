@@ -1,4 +1,4 @@
-# Class Notifier App
+# Class Notifier
 
 A final project of DevFest 2021
 -----------------------------------------
@@ -16,10 +16,8 @@ A final project of DevFest 2021
 👽 **Đỗ Minh Quân**
 - Github: [@Gideon2801](https://github.com/Gideon2801)
 
-## Installation
-``` git@github.com:binhlecong/class_notifier.git ```
-
 ## Explanation of the idea/features of the application
+This app is used for....
 
 ## Demo
 
